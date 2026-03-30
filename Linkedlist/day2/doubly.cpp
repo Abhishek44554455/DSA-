@@ -52,18 +52,76 @@ void insertAtHead(Node* &head,Node* &tail,int data){
         head=newNode;
     }
 }
+void deleteAtHead(Node* &head,Node* &tail,int position){
+    int len=getLength(head);
+    if(head==NULL){
+        cout<<"Linked List is empty";
+        return;
+    }
+    if(head->next==NULL){
+        Node* temp=head;
+        head=tail=NULL;
+        delete temp;
+        return ;
+
+    }
+    if(position==1){
+        //want to delete first element
+    Node* temp=head;
+    head=head->next;
+    head->prev=NULL;
+    temp->next=NULL;
+    delete temp;
+    return;
+    }
+    if(position==len){
+        //delete last node;
+        Node* temp=tail;
+        tail=tail->prev;
+        temp->prev=NULL;
+        tail->next=NULL;
+        delete temp;
+    }
+    //delete from middle
+
+    //step1-: find left,curr,right
+    int i=1;
+    Node* left=head;
+    while(i<position-1){
+        left=left->next;
+        i++;
+    }
+    Node* curr=left->next;
+    Node* right=curr->next;
+
+    //update the connections
+    curr->prev=NULL;
+    curr->next=NULL;
+    left->next=right;
+    right->prev=left;
+
+}
 
 int main(){
     Node* first=new Node(10);
     Node* second=new Node(20);
-    Node* third=new Node(30);Node* head=first;
+    Node* third=new Node(30);
+    Node* head=first;
     Node* tail=third;
+    // Node* head=NULL;
+    // Node* tail=NULL;
     
     first->next=second;
     second->prev=first;
     second->next=third;
     third->prev=second;
     cout<<endl;
+    
     insertAtHead(head,tail,101);
+    
+    print(head);
+    // insertAtHead(head,tail,10);
+    // insertAtHead(head,tail,20);
+    // insertAtHead(head,tail,30);
     print(head);
 }
